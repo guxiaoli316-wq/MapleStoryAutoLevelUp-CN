@@ -956,7 +956,8 @@ class MapleStoryAutoBot:
         crop_right = max(0, w - target_w) - crop_left
         frame_no_title = frame_no_title[crop_top:h-crop_bottom, crop_left:w-crop_right]
 
-        return frame_no_title
+        return cv2.resize(frame_no_title, WINDOW_WORKING_SIZE,
+                   interpolation=cv2.INTER_NEAREST)
 
     def is_player_stuck(self):
         """
