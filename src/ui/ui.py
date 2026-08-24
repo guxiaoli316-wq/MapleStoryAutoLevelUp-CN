@@ -613,7 +613,7 @@ class MainWindow(QMainWindow):
         input_key = SingleKeyEdit()
         input_key.setFixedWidth(100)
 
-        label_3 = QLabel("键。")
+        label_3 = QLabel("keys")
         label_3.setSizePolicy(QSizePolicy.Maximum, QSizePolicy.Preferred)
 
         # Add to layout
@@ -925,7 +925,7 @@ class MainWindow(QMainWindow):
             self.cfg["health_monitor"]["add_mp_percent"] = 0
         # Buff skills
         if not self.checkbox_enable_buff.isChecked():
-            self.cfg["buff_skill"]["键。"] = []
+            self.cfg["buff_skill"]["keys"] = []
             self.cfg["buff_skill"]["cooldown"] = []
         else:
             keys = []
@@ -939,7 +939,7 @@ class MainWindow(QMainWindow):
                 if key:
                     keys.append(key)
                     cooldowns.append(cd)
-            self.cfg["buff_skill"]["键。"] = keys
+            self.cfg["buff_skill"]["keys"] = keys
             self.cfg["buff_skill"]["cooldown"] = cooldowns
 
         # Map selection
