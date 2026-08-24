@@ -957,7 +957,7 @@ class MainWindow(QMainWindow):
         scaled_pixmap = pixmap.scaled(
                             self.debug_canvas.width(),
                             self.debug_canvas.height(),
-                            Qt.KeepAspectRatio,
+                            Qt.IgnoreAspectRatio,
                             Qt.SmoothTransformation)
 
         self.debug_canvas.setPixmap(scaled_pixmap)
@@ -973,7 +973,7 @@ class MainWindow(QMainWindow):
         scaled_pixmap = pixmap.scaled(
                             self.route_map_canvas.width(),
                             self.route_map_canvas.height(),
-                            Qt.KeepAspectRatio,
+                            Qt.IgnoreAspectRatio,
                             Qt.SmoothTransformation)
 
         self.route_map_canvas.setPixmap(scaled_pixmap)
