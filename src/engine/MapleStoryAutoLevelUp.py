@@ -940,29 +940,16 @@ class MapleStoryAutoBot:
             logger.warning("Failed to capture game frame.")
             return
 
-        # Cut the title bar and resize raw frame to (1296, 759)
-        frame_no_title = self.frame[self.cfg["game_window"]["title_bar_height"]:, :]
+        # Cut the title bar
+        title_bar = self.cfg["game_window"]["title_bar_height"]
+        frame_no_title = self.frame[title_bar:, :]
 
-        # Make sure the window ratio is as expected
-        if self.args.test_image != "":
-            pass # Disable size check if using test image for debugging
-        elif self.cfg["bot"]["mode"] == "aux":
-            if not is_img_16_to_9(frame_no_title, self.cfg): # Aux mode allow 16:9 resolution
-                text = f"Unexpeted window size: {frame_no_title.shape[:2]} (expect window ratio 16:9)\n"
-                text += "Please use windowed mode & smallest resolution."
-                logger.error(text)
-                return
-        else:
-            # Other mode only allow specific resolution
-            expected_size = tuple(self.cfg["game_window"]["size"])
-            actual_size = frame_no_title.shape[:2]
-            size_diff = abs(expected_size[0] - actual_size[0]) + abs(expected_size[1] - actual_size[1])
-            if size_diff > 200:
-                text = f"窗口尺寸不匹配: 实际{actual_size}, 期望{expected_size} (差异{size_diff}px)\n"\
-                       f"请确保游戏窗口为窗口模式，分辨率接近 {expected_size[1]}x{expected_size[0]}\n"
-                text += "Please use windowed mode & smallest resolution."
-                logger.error(text)
-                return
+        # Crop to target client area size (h, w) = game_window.size
+        # This removes window borders/extra pixels captured by WindowsCapture
+        target_h, target_w = self.cfg["game_window"]["size"]
+        h, w = frame_no_title.shape[:2]
+        if h > target_h or w > target_w:
+            frame_no_title = frame_no_title[:target_h, :target_w]
 
         return cv2.resize(frame_no_title, WINDOW_WORKING_SIZE,
                    interpolation=cv2.INTER_NEAREST)
