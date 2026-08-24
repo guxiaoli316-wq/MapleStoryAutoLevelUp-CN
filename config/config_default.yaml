@@ -157,7 +157,7 @@ ui_coords:
   # 🧭 UI Coordinate
   # Buttons and menu cooridinate in game window
   # Expect all these coordinate is on orignal window size (get it from frame screenshot)
-  ui_y_start: 610                       # 📐 UI y start
+  ui_y_start: 680                       # 📐 UI y start
   "menu": [1140, 730]                   # 📐 Menu coordinate on game window UI
   "channel": [1140, 666]                # 📐 Channel button coordinate
   "random_channel": [877, 161]          # 📐 Random channel button in the channel selection menu
