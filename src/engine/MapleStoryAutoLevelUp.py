@@ -1774,8 +1774,7 @@ class MapleStoryAutoBot:
             if ret == 0:
                 # Draw image on debug window
                 if self.is_show_debug_window and self.is_ui:
-                    img_frame_debug_emit = self.img_frame_debug[:
-                        self.cfg["ui_coords"]["ui_y_start"], :].copy()
+                    img_frame_debug_emit = self.img_frame_debug.copy()
                     img_route_debug_emit = self.img_route_debug.copy()
                     self.image_debug_signal.emit(img_frame_debug_emit)
                     self.route_map_viz_signal.emit(img_route_debug_emit)
