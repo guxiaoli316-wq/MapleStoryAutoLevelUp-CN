@@ -302,9 +302,9 @@ game_window:
   # 🪟 Game Window
   # Basic information about the game window setup
   title: "冒险岛怀旧服"   # 🎮 Game window title (used to detect the correct window)
-  size: [709, 1366]            # 📐 Game window size [height, width] in pixels, (Excluded title bar size)
+  size: [768, 1366]            # 📐 Game window size [height, width] in pixels, (Excluded title bar size)
   ratio_tolerance: 0.08        # 📐 Game window 16:9 tolerance
-  title_bar_height: 59         # 📐 Title Bar Height (Note it's before window resize)
+  title_bar_height: 0         # 📐 Title Bar Height (Note it's before window resize)
 
 email:
   # 📩 Email
