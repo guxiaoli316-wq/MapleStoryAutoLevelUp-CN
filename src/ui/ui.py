@@ -718,7 +718,7 @@ class MainWindow(QMainWindow):
         # === Buff SKills ===
         # Set MP settings default value
         buff_cfg = self.cfg["buff_skill"]
-        self.checkbox_enable_buff.setChecked(len(buff_cfg["键。"]))
+        self.checkbox_enable_buff.setChecked(len(buff_cfg["keys"]))
         # Clear old UI rows
         for i in reversed(range(self.buff_layout.count())):
             widget = self.buff_layout.itemAt(i).widget()
@@ -726,7 +726,7 @@ class MainWindow(QMainWindow):
                 widget.setParent(None)
         self.buff_inputs.clear()
         # Add new rows based on config
-        for key, cd in zip(buff_cfg["键。"], buff_cfg["cooldown"]):
+        for key, cd in zip(buff_cfg["keys"], buff_cfg["cooldown"]):
             self.add_buff_row(key=key, cooldown=str(cd))  # <- new version below
 
         # === Bot Mode ===
