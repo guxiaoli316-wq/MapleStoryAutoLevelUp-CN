@@ -68,10 +68,10 @@ def _get_hid_key_map():
         "U": HidKey.U, "V": HidKey.V, "W": HidKey.W, "X": HidKey.X,
         "Y": HidKey.Y, "Z": HidKey.Z,
         # 数字键
-        "0": HidKey.NUM_0, "1": HidKey.NUM_1, "2": HidKey.NUM_2,
-        "3": HidKey.NUM_3, "4": HidKey.NUM_4, "5": HidKey.NUM_5,
-        "6": HidKey.NUM_6, "7": HidKey.NUM_7, "8": HidKey.NUM_8,
-        "9": HidKey.NUM_9,
+        "0": HidKey.NUM0, "1": HidKey.NUM1, "2": HidKey.NUM2,
+        "3": HidKey.NUM3, "4": HidKey.NUM4, "5": HidKey.NUM5,
+        "6": HidKey.NUM6, "7": HidKey.NUM7, "8": HidKey.NUM8,
+        "9": HidKey.NUM9,
         # 功能键
         "F1": HidKey.F1, "F2": HidKey.F2, "F3": HidKey.F3,
         "F4": HidKey.F4, "F5": HidKey.F5, "F6": HidKey.F6,
