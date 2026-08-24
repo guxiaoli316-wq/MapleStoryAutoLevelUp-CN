@@ -31,17 +31,17 @@ from src.utils.common import (
 # window size for each tab
 if is_mac():
     TAB_WINDOW_SIZE = {
-        'Main': (700, 800),
-        'Advanced Settings': (750, 800),
-        'Game Window Viz': (850, 430), # smaller for macbook screen
-        'Route Map Viz': (400, 400),
+        '主界面': (700, 800),
+        '高级设置': (750, 800),
+        '游戏画面': (850, 430), # smaller for macbook screen
+        '路线地图': (400, 400),
     }
 else:
     TAB_WINDOW_SIZE = {
-        'Main': (700, 800),
-        'Advanced Settings': (750, 800),
-        'Game Window Viz': (1280, 650),
-        'Route Map Viz': (800, 800),
+        '主界面': (700, 800),
+        '高级设置': (750, 800),
+        '游戏画面': (1280, 650),
+        '路线地图': (800, 800),
     }
 
 ADV_SETTINGS_HIDE = ['key', 'bot'] # cfg tile here will not shown in advanced settings tabs
@@ -78,8 +78,8 @@ class MainWindow(QMainWindow):
         # Window Settings
         self.setWindowTitle("冒险岛怀旧服 - 自动练级")
         self.setMinimumSize(1, 1)
-        self.resize(TAB_WINDOW_SIZE['Main'][0],
-                    TAB_WINDOW_SIZE['Main'][1])
+        self.resize(TAB_WINDOW_SIZE['主界面'][0],
+                    TAB_WINDOW_SIZE['主界面'][1])
 
         # Setup tabs
         self.tabs = QTabWidget()
@@ -249,6 +249,8 @@ class MainWindow(QMainWindow):
         form_left = QFormLayout()
         self.attack_mode = QComboBox()
         self.attack_mode.addItems(["基础攻击", "AOE技能"])
+        self.attack_mode.setItemData(0, "directional")
+        self.attack_mode.setItemData(1, "aoe_skill")
         self.attack_mode.setFixedWidth(100)
 
         # Connect dropdown change to handler
@@ -526,6 +528,9 @@ class MainWindow(QMainWindow):
         layout_bot_mode.setSpacing(8)
         self.bot_mode = QComboBox()
         self.bot_mode.addItems(["普通模式", "辅助模式", "巡逻模式"])
+        self.bot_mode.setItemData(0, "normal")
+        self.bot_mode.setItemData(1, "aux")
+        self.bot_mode.setItemData(2, "patrol")
 
         layout_bot_mode.addWidget(QLabel("脚本模式:"))
         layout_bot_mode.addWidget(self.bot_mode)
@@ -779,8 +784,9 @@ class MainWindow(QMainWindow):
             logger.error(f"[UI] Unexpected tab name: {tab_name}")
             self.controller.disable_bot_viz()
 
-        self.resize(TAB_WINDOW_SIZE[tab_name][0],
-                    TAB_WINDOW_SIZE[tab_name][1])
+        if tab_name in TAB_WINDOW_SIZE:
+            self.resize(TAB_WINDOW_SIZE[tab_name][0],
+                        TAB_WINDOW_SIZE[tab_name][1])
 
         logger.info(f"[UI] user change tab to {tab_name}")
 
@@ -883,15 +889,15 @@ class MainWindow(QMainWindow):
         Collect setting from UI framework
         '''
         # Bot control gbox
-        self.cfg["bot"]["mode"] = self.bot_mode.currentText()
+        self.cfg["bot"]["mode"] = self.bot_mode.currentData()
         # Attack setting gbox
-        if self.attack_mode.currentText() == "Basic":
+        if self.attack_mode.currentText() == "基础攻击":
             self.cfg["bot"]["attack"] = "directional"
             self.cfg["key"]["directional_attack"] = self.basic_attack_key.get_key()
             self.cfg["directional_attack"]["range_x"] = int(self.attack_range_x.text())
             self.cfg["directional_attack"]["range_y"] = int(self.attack_range_y.text())
             self.cfg["directional_attack"]["cooldown"] = float(self.attack_cooldown.text())
-        elif self.attack_mode.currentText() == "AOE Skill":
+        elif self.attack_mode.currentText() == "AOE技能":
             self.cfg["bot"]["attack"] = "aoe_skill"
             self.cfg["key"]["aoe_skill"] = self.basic_attack_key.get_key()
             self.cfg["aoe_skill"]["range_x"] = int(self.attack_range_x.text())

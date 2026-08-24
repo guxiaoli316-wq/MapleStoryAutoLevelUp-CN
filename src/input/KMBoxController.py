@@ -60,39 +60,39 @@ def _get_hid_key_map():
     from kmbox_universal import HidKey
     _HID_KEY_MAP = {
         # 字母键
-        "a": HidKey.A, "b": HidKey.B, "c": HidKey.C, "d": HidKey.D,
-        "e": HidKey.E, "f": HidKey.F, "g": HidKey.G, "h": HidKey.H,
-        "i": HidKey.I, "j": HidKey.J, "k": HidKey.K, "l": HidKey.L,
-        "m": HidKey.M, "n": HidKey.N, "o": HidKey.O, "p": HidKey.P,
-        "q": HidKey.Q, "r": HidKey.R, "s": HidKey.S, "t": HidKey.T,
-        "u": HidKey.U, "v": HidKey.V, "w": HidKey.W, "x": HidKey.X,
-        "y": HidKey.Y, "z": HidKey.Z,
+        "A": HidKey.A, "B": HidKey.B, "C": HidKey.C, "D": HidKey.D,
+        "E": HidKey.E, "F": HidKey.F, "G": HidKey.G, "H": HidKey.H,
+        "I": HidKey.I, "J": HidKey.J, "K": HidKey.K, "L": HidKey.L,
+        "M": HidKey.M, "N": HidKey.N, "O": HidKey.O, "P": HidKey.P,
+        "Q": HidKey.Q, "R": HidKey.R, "S": HidKey.S, "T": HidKey.T,
+        "U": HidKey.U, "V": HidKey.V, "W": HidKey.W, "X": HidKey.X,
+        "Y": HidKey.Y, "Z": HidKey.Z,
         # 数字键
         "0": HidKey.NUM_0, "1": HidKey.NUM_1, "2": HidKey.NUM_2,
         "3": HidKey.NUM_3, "4": HidKey.NUM_4, "5": HidKey.NUM_5,
         "6": HidKey.NUM_6, "7": HidKey.NUM_7, "8": HidKey.NUM_8,
         "9": HidKey.NUM_9,
         # 功能键
-        "f1": HidKey.F1, "f2": HidKey.F2, "f3": HidKey.F3,
-        "f4": HidKey.F4, "f5": HidKey.F5, "f6": HidKey.F6,
-        "f7": HidKey.F7, "f8": HidKey.F8, "f9": HidKey.F9,
-        "f10": HidKey.F10, "f11": HidKey.F11, "f12": HidKey.F12,
+        "F1": HidKey.F1, "F2": HidKey.F2, "F3": HidKey.F3,
+        "F4": HidKey.F4, "F5": HidKey.F5, "F6": HidKey.F6,
+        "F7": HidKey.F7, "F8": HidKey.F8, "F9": HidKey.F9,
+        "F10": HidKey.F10, "F11": HidKey.F11, "F12": HidKey.F12,
         # 方向键
-        "left": HidKey.LEFT, "right": HidKey.RIGHT,
-        "up": HidKey.UP, "down": HidKey.DOWN,
+        "LEFT": HidKey.LEFT, "RIGHT": HidKey.RIGHT,
+        "UP": HidKey.UP, "DOWN": HidKey.DOWN,
         # 特殊键
-        "space": HidKey.SPACE, "enter": HidKey.ENTER,
-        "tab": HidKey.TAB, "escape": HidKey.ESCAPE, "esc": HidKey.ESCAPE,
-        "delete": HidKey.DELETE, "end": HidKey.END,
-        "home": HidKey.HOME, "insert": HidKey.INSERT,
-        "pageup": HidKey.PAGE_UP, "pagedown": HidKey.PAGE_DOWN,
+        "SPACE": HidKey.SPACE, "ENTER": HidKey.ENTER,
+        "TAB": HidKey.TAB, "ESCAPE": HidKey.ESCAPE, "ESC": HidKey.ESCAPE,
+        "DELETE": HidKey.DELETE, "END": HidKey.END,
+        "HOME": HidKey.HOME, "INSERT": HidKey.INSERT,
+        "PAGEUP": HidKey.PAGE_UP, "PAGEDOWN": HidKey.PAGE_DOWN,
         # 修饰键
-        "ctrl": HidKey.LEFT_CTRL, "ctrlleft": HidKey.LEFT_CTRL,
-        "ctrlright": HidKey.RIGHT_CTRL,
-        "alt": HidKey.LEFT_ALT, "altleft": HidKey.LEFT_ALT,
-        "altright": HidKey.RIGHT_ALT,
-        "shift": HidKey.LEFT_SHIFT, "shiftleft": HidKey.LEFT_SHIFT,
-        "shiftright": HidKey.RIGHT_SHIFT,
+        "CTRL": HidKey.LEFT_CTRL, "CTRLLEFT": HidKey.LEFT_CTRL,
+        "CTRLRIGHT": HidKey.RIGHT_CTRL,
+        "ALT": HidKey.LEFT_ALT, "ALTLEFT": HidKey.LEFT_ALT,
+        "ALTRIGHT": HidKey.RIGHT_ALT,
+        "SHIFT": HidKey.LEFT_SHIFT, "SHIFTLEFT": HidKey.LEFT_SHIFT,
+        "SHIFTRIGHT": HidKey.RIGHT_SHIFT,
     }
     return _HID_KEY_MAP
 
@@ -100,9 +100,9 @@ def _get_hid_key_map():
 def _to_hid_key(key_name):
     """将键名转换为 HidKey"""
     key_map = _get_hid_key_map()
-    key_lower = key_name.lower()
-    if key_lower in key_map:
-        return key_map[key_lower]
+    key_upper = key_name.upper()
+    if key_upper in key_map:
+        return key_map[key_upper]
     raise ValueError(f"未知按键: {key_name}")
 
 
@@ -120,7 +120,7 @@ def key_down(key):
         hid_key = _to_hid_key(key)
         client.key_down(hid_key)
     except Exception as e:
-        logger.warning(f"[KMBox key_down] 失败: {key} - {e}")
+        logger.debug(f"[KMBox key_down] 失败: {key} - {e}")
 
 
 def key_up(key):
@@ -130,7 +130,7 @@ def key_up(key):
         hid_key = _to_hid_key(key)
         client.key_up(hid_key)
     except Exception as e:
-        logger.warning(f"[KMBox key_up] 失败: {key} - {e}")
+        logger.debug(f"[KMBox key_up] 失败: {key} - {e}")
 
 
 def press_key(key, duration=None):
@@ -152,7 +152,7 @@ def press_key(key, duration=None):
         hold_ms = int(duration * 1000)
         client.key_press(hid_key, hold_ms)
     except Exception as e:
-        logger.warning(f"[KMBox press_key] 失败: {key} - {e}")
+        logger.debug(f"[KMBox press_key] 失败: {key} - {e}")
 
 
 def close_kmbox():

@@ -162,6 +162,9 @@ class MapleStoryAutoBot:
         if cfg["bot"]["mode"] == "normal":
             map_name = cfg['bot']['map']
             # Check if the map is supported in config_data.yaml
+            if not map_name:
+                logger.info("地图未选择，跳过地图加载")
+                return
             if map_name not in self.data["map_mobs_mapping"]:
                 text = f"Invalid map name: {map_name}. "\
                         "Not supported in config/config_data.yaml."
@@ -951,9 +954,12 @@ class MapleStoryAutoBot:
                 return
         else:
             # Other mode only allow specific resolution
-            if self.cfg["game_window"]["size"] != frame_no_title.shape[:2]:
-                text = f"Unexpeted window size: {frame_no_title.shape[:2]} "\
-                       f"(expect {self.cfg['game_window']['size']})\n"
+            expected_size = tuple(self.cfg["game_window"]["size"])
+            actual_size = frame_no_title.shape[:2]
+            size_diff = abs(expected_size[0] - actual_size[0]) + abs(expected_size[1] - actual_size[1])
+            if size_diff > 200:
+                text = f"窗口尺寸不匹配: 实际{actual_size}, 期望{expected_size} (差异{size_diff}px)\n"\
+                       f"请确保游戏窗口为窗口模式，分辨率接近 {expected_size[1]}x{expected_size[0]}\n"
                 text += "Please use windowed mode & smallest resolution."
                 logger.error(text)
                 return
