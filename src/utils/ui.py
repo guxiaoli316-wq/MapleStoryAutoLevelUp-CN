@@ -24,7 +24,7 @@ def validate_numerical_input(input_str: str, error_label: QLabel,
         error_label.setVisible(False)
         return True
     except ValueError:
-        error_label.setText(f"Please enter number between {val_lowest} and {val_highest}.")
+        error_label.setText(f"请输入 {val_lowest} 到 {val_highest} 之间的数字")
         error_label.setVisible(True)
         logger.debug(f"Invalid numerical input: {input_str}")
         return False
@@ -60,7 +60,7 @@ def clear_debug_canvas(canvas):
     Flush the debug window viz canvas
     '''
     canvas.clear()
-    canvas.setText("Press start or 'F1' to start AutoBot")
+    canvas.setText("按开始或 'F1' 启动脚本")
     canvas.setAlignment(Qt.AlignCenter)
 
 class SingleKeyEdit(QKeySequenceEdit):
