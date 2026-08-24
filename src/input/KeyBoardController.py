@@ -1,13 +1,14 @@
 '''
 KeyBoardController
 Simulate user keyboard input to control character in the game 
+使用 KMBox Net 硬件 HID 输入（绕过游戏反作弊）
 '''
 # Standard Import
 import threading
 import time
 
-# Library import
-import pyautogui
+# Library import - 使用 KMBox 替代 pyautogui
+from src.input.KMBoxController import key_down, key_up, press_key, init_kmbox
 from pynput import keyboard
 
 # Local import
@@ -19,52 +20,10 @@ if is_mac():
 else:
     import pygetwindow as gw
 
-pyautogui.PAUSE = 0  # remove delay
-
-def key_down(key):
-    '''
-    Press key down
-    '''
-    try:
-        pyautogui.keyDown(key)
-    except pyautogui.FailSafeException:
-        logger.warning("[key_down] pyautogui failsafe triggered during key_down.")
-        recover_mouse()
-
-def key_up(key):
-    '''
-    Release key
-    '''
-    try:
-        pyautogui.keyUp(key)
-    except pyautogui.FailSafeException:
-        logger.warning("[key_up] pyautogui failsafe triggered during key_up.")
-        recover_mouse()
-
-def recover_mouse():
-    '''
-    Move mouse back to center to avoid pyautogui failsafe
-    '''
-    pyautogui.FAILSAFE = False # Temp disasble failsafe to avoid nested exception
-
-    screen_w, screen_h = pyautogui.size()
-    pyautogui.moveTo(screen_w // 2, screen_h // 2)
-    time.sleep(0.2) # Give it a moment to "cool down"
-
-    pyautogui.FAILSAFE = True # Recover failsafe
-
-def press_key(key, duration=0.05):
-    '''
-    Simulates a key press for a specified duration
-    '''
-    if key:
-        key_down(key)
-        time.sleep(duration)
-        key_up(key)
 
 class KeyBoardController():
     '''
-    KeyBoardController
+    KeyBoardController - KMBox 硬件输入版本
     '''
     def __init__(self, cfg):
         self.cfg = cfg
@@ -91,6 +50,20 @@ class KeyBoardController():
         # Parameters
         self.debounce_interval = self.cfg["system"]["key_debounce_interval"]
         self.fps_limit = self.cfg["system"]["fps_limit_keyboard_controller"]
+
+        # 初始化 KMBox 硬件输入
+        kmbox_cfg = self.cfg.get("kmbox", {})
+        kmbox_ip = kmbox_cfg.get("ip", "192.168.2.188")
+        kmbox_port = kmbox_cfg.get("port", 1000)
+        kmbox_uuid = kmbox_cfg.get("uuid", "25ABDBB2")
+        kmbox_encrypted = kmbox_cfg.get("encrypted", True)
+        
+        try:
+            init_kmbox(kmbox_ip, kmbox_port, kmbox_uuid, kmbox_encrypted)
+            logger.info("[KeyBoardController] KMBox 硬件输入已初始化")
+        except Exception as e:
+            logger.error(f"[KeyBoardController] KMBox 初始化失败: {e}")
+            logger.warning("[KeyBoardController] 将使用软件模拟模式（可能被检测）")
 
         # use 'ctrl', 'alt' for mac, because it's hard to get around
         # macOS's security settings

@@ -301,8 +301,8 @@ route_recoder:
 game_window:
   # 🪟 Game Window
   # Basic information about the game window setup
-  title: "MapleStory Worlds"   # 🎮 Game window title (used to detect the correct window)
-  size: [693, 1282]            # 📐 Game window size [height, width] in pixels, (Excluded title bar size)
+  title: "冒险岛怀旧服"   # 🎮 Game window title (used to detect the correct window)
+  size: [768, 1366]            # 📐 Game window size [height, width] in pixels, (Excluded title bar size)
   ratio_tolerance: 0.08        # 📐 Game window 16:9 tolerance
   title_bar_height: 59         # 📐 Title Bar Height (Note it's before window resize)
 
@@ -314,6 +314,13 @@ email:
   sender_email: "maplestoryautolevelup@gmail.com" # Your don't have to change this
   sender_password: "lvxfdhthvvrcuojj"             # Your don't have to change this
   receiver_email: "luckyyu910645@gmailcom"        # 📩 Put your email here
+
+kmbox:
+  # U0001F50C KMBox Net 硬件输入
+  ip: "192.168.2.188"
+  port: 1000
+  uuid: "25ABDBB2"
+  encrypted: True
 
 system:
   # ⚙️ System Settings

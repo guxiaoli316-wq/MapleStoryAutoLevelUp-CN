@@ -1,3 +1,3 @@
 # Global Variable
 
-WINDOW_WORKING_SIZE = (1296, 700) # (h, w)
+WINDOW_WORKING_SIZE = (1366, 768) # (h, w)
