@@ -948,8 +948,12 @@ class MapleStoryAutoBot:
         # This removes window borders/extra pixels captured by WindowsCapture
         target_h, target_w = self.cfg["game_window"]["size"]
         h, w = frame_no_title.shape[:2]
-        if h > target_h or w > target_w:
-            frame_no_title = frame_no_title[:target_h, :target_w]
+        # Center-crop: remove equal border from all sides
+        crop_top = 0
+        crop_bottom = max(0, h - target_h)
+        crop_left = max(0, w - target_w) // 2
+        crop_right = max(0, w - target_w) - crop_left
+        frame_no_title = frame_no_title[crop_top:h-crop_bottom, crop_left:w-crop_right]
 
         return cv2.resize(frame_no_title, WINDOW_WORKING_SIZE,
                    interpolation=cv2.INTER_NEAREST)
