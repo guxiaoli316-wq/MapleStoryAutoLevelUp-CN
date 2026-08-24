@@ -1071,9 +1071,9 @@ class MapleStoryAutoBot:
         # Print text at bottom left corner
         self.fps = round(1.0 / (time.time() - self.t_last_frame))
         text_y_interval = 23
-        text_y_start = 460
+        h, w = self.img_frame_debug.shape[:2]
+        text_y_start = max(0, h - 160)  # Dynamic position based on actual frame height
         dt_screenshot = time.time() - self.kb.t_last_screenshot
-        h, w = self.frame.shape[:2]
         text_list = [
             f"FPS: {self.fps}",
             f"State: {self.fsm.state.name}",
