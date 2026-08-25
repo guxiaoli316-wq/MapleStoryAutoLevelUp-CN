@@ -955,11 +955,11 @@ class MainWindow(QMainWindow):
         qimg = QImage(img.data, width, height, QImage.Format_BGR888)
         pixmap = QPixmap.fromImage(qimg)
 
-        # Scale the image to fill the entire canvas
+        # Scale the image to fit canvas while maintaining aspect ratio
         scaled_pixmap = pixmap.scaled(
                             self.debug_canvas.width(),
                             self.debug_canvas.height(),
-                            Qt.IgnoreAspectRatio,
+                            Qt.KeepAspectRatio,
                             Qt.SmoothTransformation)
 
         self.debug_canvas.setPixmap(scaled_pixmap)
