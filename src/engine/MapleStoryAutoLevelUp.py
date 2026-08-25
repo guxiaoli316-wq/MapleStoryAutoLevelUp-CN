@@ -946,9 +946,16 @@ class MapleStoryAutoBot:
         
         h, w = frame_no_title.shape[:2]
         
-        # After title bar cut, frame is ~1368x768 (includes 1px borders each side)
-        # Keep the full frame - don't crop width to avoid distortion
-        # The 2px extra width is negligible and won't affect gameplay
+        # After title bar cut, frame is ~1368x768 (includes window borders)
+        # Crop to exact game resolution 1366x768
+        target_w, target_h = 1366, 768
+        h, w = frame_no_title.shape[:2]
+        if w > target_w or h > target_h:
+            crop_w = max(0, w - target_w)
+            crop_h = max(0, h - target_h)
+            x0 = crop_w // 2
+            y0 = crop_h // 2
+            frame_no_title = frame_no_title[y0:y0+target_h, x0:x0+target_w]
         return frame_no_title
 
     def is_player_stuck(self):
