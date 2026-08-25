@@ -949,26 +949,21 @@ class MapleStoryAutoBot:
         target_h, target_w = self.cfg["game_window"]["size"]
         h, w = frame_no_title.shape[:2]
         
-        # Center-crop: remove equal border from all sides
-        crop_h = max(0, h - target_h)
-        crop_w = max(0, w - target_w)
-        crop_top = crop_h // 2
-        crop_bottom = crop_h - crop_top
-        crop_left = crop_w // 2
-        crop_right = crop_w - crop_left
-        frame_no_title = frame_no_title[crop_top:h-crop_bottom, crop_left:w-crop_right]
+        # Center-crop to exact target size
+        if h > target_h:
+            crop_h = h - target_h
+            crop_top = crop_h // 2
+            frame_no_title = frame_no_title[crop_top:crop_top + target_h, :]
+        if w > target_w:
+            crop_w = w - target_w
+            crop_left = crop_w // 2
+            frame_no_title = frame_no_title[:, crop_left:crop_left + target_w]
         
-        # Verify exact size after crop
-        ch, cw = frame_no_title.shape[:2]
-        if ch != target_h or cw != target_w:
-            # Force exact size by trimming from bottom/right
-            frame_no_title = frame_no_title[:target_h, :target_w]
-
-        # Resize to standard working size for consistent processing
-        # WINDOW_WORKING_SIZE = (width, height) for cv2.resize
+        # Resize to standard working size
+        # cv2.resize dsize = (width, height)
         result = cv2.resize(frame_no_title, (WINDOW_WORKING_SIZE[0], WINDOW_WORKING_SIZE[1]),
                    interpolation=cv2.INTER_AREA)
-        logger.info(f"[get_img_frame] raw={h}x{w} crop={target_h}x{target_w} -> actual={ch}x{cw} -> resize={WINDOW_WORKING_SIZE[0]}x{WINDOW_WORKING_SIZE[1]}")
+        logger.info(f"[get_img_frame] raw={h}x{w} -> crop={target_h}x{target_w} -> resize={WINDOW_WORKING_SIZE[0]}x{WINDOW_WORKING_SIZE[1]}")
         return result
 
     def is_player_stuck(self):
@@ -1574,9 +1569,11 @@ class MapleStoryAutoBot:
         # Grayscale game window
         self.img_frame_gray = cv2.cvtColor(self.img_frame, cv2.COLOR_BGR2GRAY)
 
-        # Image for debug viz - use the working frame (resized to WINDOW_WORKING_SIZE)
+        # Image for debug viz - use raw cropped frame (before resize) to show actual game window
         if self.is_show_debug_window:
-            self.img_frame_debug = self.img_frame.copy()
+            # Use the frame_no_title which is the cropped but not yet resized frame
+            # This shows the actual game window content without resize distortion
+            self.img_frame_debug = frame_no_title.copy()
 
         # Get current route image
         if self.cfg["bot"]["mode"] == "normal":
