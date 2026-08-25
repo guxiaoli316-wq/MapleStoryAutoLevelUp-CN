@@ -945,19 +945,17 @@ class MapleStoryAutoBot:
         frame_no_title = self.frame[title_bar:, :]
         
         h, w = frame_no_title.shape[:2]
-        logger.info(f"[get_img_frame] raw frame after title cut: {w}x{h}")
         
-        # Crop to exact game resolution 1366x768 (remove window borders)
-        # WindowsCapture includes ~1px borders on each side
+        # Crop to exact 1366x768 (remove window borders captured by WindowsCapture)
         target_w, target_h = 1366, 768
-        if w != target_w or h != target_h:
+        if w > target_w or h > target_h:
             crop_w = max(0, w - target_w)
             crop_h = max(0, h - target_h)
             x0 = crop_w // 2
             y0 = crop_h // 2
             frame_no_title = frame_no_title[y0:y0+target_h, x0:x0+target_w]
-            logger.info(f"[get_img_frame] {w}x{h} -> crop to {target_w}x{target_h}")
         
+        logger.info(f"[get_img_frame] {w}x{h} -> {frame_no_title.shape[1]}x{frame_no_title.shape[0]}")
         return frame_no_title
 
     def is_player_stuck(self):
