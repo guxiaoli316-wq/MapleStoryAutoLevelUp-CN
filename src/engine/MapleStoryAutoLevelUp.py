@@ -958,8 +958,10 @@ class MapleStoryAutoBot:
 
         # Resize to standard working size for consistent processing
         # Use INTER_AREA for downscaling to preserve quality
-        return cv2.resize(frame_no_title, WINDOW_WORKING_SIZE,
+        result = cv2.resize(frame_no_title, WINDOW_WORKING_SIZE,
                    interpolation=cv2.INTER_AREA)
+        logger.info(f"[get_img_frame] {h}x{w} -> crop({target_h}x{target_w}) -> resize({WINDOW_WORKING_SIZE[1]}x{WINDOW_WORKING_SIZE[0]})")
+        return result
 
     def is_player_stuck(self):
         """
