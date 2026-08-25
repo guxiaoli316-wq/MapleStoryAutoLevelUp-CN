@@ -956,6 +956,9 @@ class MapleStoryAutoBot:
         crop_right = max(0, w - target_w) - crop_left
         frame_no_title = frame_no_title[crop_top:h-crop_bottom, crop_left:w-crop_right]
 
+        # Store raw frame for debug display
+        self.frame_no_title_raw = frame_no_title.copy()
+        
         # Resize to standard working size for consistent processing
         # Use INTER_AREA for downscaling to preserve quality
         result = cv2.resize(frame_no_title, WINDOW_WORKING_SIZE,
@@ -1566,11 +1569,9 @@ class MapleStoryAutoBot:
         # Grayscale game window
         self.img_frame_gray = cv2.cvtColor(self.img_frame, cv2.COLOR_BGR2GRAY)
 
-        # Image for debug viz - use raw frame for display, resized frame for processing
+        # Image for debug viz - use raw frame for display (no resize distortion)
         if self.is_show_debug_window:
-            # Use the raw captured frame (before resize) for debug display
-            # This shows the actual game window content without distortion
-            self.img_frame_debug = frame_no_title_raw.copy() if 'frame_no_title_raw' in dir() else self.img_frame.copy()
+            self.img_frame_debug = self.frame_no_title_raw.copy()
 
         # Get current route image
         if self.cfg["bot"]["mode"] == "normal":
