@@ -959,11 +959,11 @@ class MapleStoryAutoBot:
             crop_left = crop_w // 2
             frame_no_title = frame_no_title[:, crop_left:crop_left + target_w]
         
-        # Resize to standard working size
         # cv2.resize dsize = (width, height)
-        result = cv2.resize(frame_no_title, (WINDOW_WORKING_SIZE[0], WINDOW_WORKING_SIZE[1]),
+        # WINDOW_WORKING_SIZE = (1366, 768) means width=1366, height=768
+        result = cv2.resize(frame_no_title, (1366, 768),
                    interpolation=cv2.INTER_AREA)
-        logger.info(f"[get_img_frame] raw={h}x{w} -> crop={target_h}x{target_w} -> resize={WINDOW_WORKING_SIZE[0]}x{WINDOW_WORKING_SIZE[1]}")
+        logger.info(f"[get_img_frame] raw={h}x{w} -> crop={target_h}x{target_w} -> resize=1366x768")
         return result
 
     def is_player_stuck(self):
@@ -1569,11 +1569,9 @@ class MapleStoryAutoBot:
         # Grayscale game window
         self.img_frame_gray = cv2.cvtColor(self.img_frame, cv2.COLOR_BGR2GRAY)
 
-        # Image for debug viz - use raw cropped frame (before resize) to show actual game window
+        # Image for debug viz
         if self.is_show_debug_window:
-            # Use the frame_no_title which is the cropped but not yet resized frame
-            # This shows the actual game window content without resize distortion
-            self.img_frame_debug = frame_no_title.copy()
+            self.img_frame_debug = self.img_frame.copy()
 
         # Get current route image
         if self.cfg["bot"]["mode"] == "normal":
