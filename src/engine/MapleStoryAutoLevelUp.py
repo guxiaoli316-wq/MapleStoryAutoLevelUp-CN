@@ -944,6 +944,9 @@ class MapleStoryAutoBot:
         title_bar = self.cfg["game_window"]["title_bar_height"]
         frame_no_title = self.frame[title_bar:, :]
 
+        # Store raw frame for debug display (shows actual game window)
+        self.frame_raw = frame_no_title.copy()
+
         # Crop to target client area size (h, w) = game_window.size
         # This removes window borders/extra pixels captured by WindowsCapture
         target_h, target_w = self.cfg["game_window"]["size"]
@@ -1569,9 +1572,9 @@ class MapleStoryAutoBot:
         # Grayscale game window
         self.img_frame_gray = cv2.cvtColor(self.img_frame, cv2.COLOR_BGR2GRAY)
 
-        # Image for debug viz
+        # Image for debug viz - use raw frame to show actual game window
         if self.is_show_debug_window:
-            self.img_frame_debug = self.img_frame.copy()
+            self.img_frame_debug = self.frame_raw.copy()
 
         # Get current route image
         if self.cfg["bot"]["mode"] == "normal":
