@@ -40,7 +40,7 @@ else:
     TAB_WINDOW_SIZE = {
         '主界面': (700, 800),
         '高级设置': (750, 800),
-        '游戏画面': (1500, 844),
+        '游戏画面': (1502, 844),
         '路线地图': (800, 800),
     }
 
@@ -952,6 +952,8 @@ class MainWindow(QMainWindow):
             return
 
         height, width, _ = img.shape
+        logger.debug(f"[update_debug_canvas] Image size: {width}x{height}, Canvas size: {self.debug_canvas.width()}x{self.debug_canvas.height()}")
+        
         qimg = QImage(img.data, width, height, QImage.Format_BGR888)
         pixmap = QPixmap.fromImage(qimg)
 
