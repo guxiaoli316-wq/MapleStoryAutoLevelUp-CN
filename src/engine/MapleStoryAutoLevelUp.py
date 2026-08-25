@@ -944,9 +944,6 @@ class MapleStoryAutoBot:
         title_bar = self.cfg["game_window"]["title_bar_height"]
         frame_no_title = self.frame[title_bar:, :]
 
-        # Store raw frame for debug display (shows actual game window)
-        self.frame_raw = frame_no_title.copy()
-
         # Crop to target client area size (h, w) = game_window.size
         # This removes window borders/extra pixels captured by WindowsCapture
         target_h, target_w = self.cfg["game_window"]["size"]
@@ -961,6 +958,9 @@ class MapleStoryAutoBot:
             crop_w = w - target_w
             crop_left = crop_w // 2
             frame_no_title = frame_no_title[:, crop_left:crop_left + target_w]
+        
+        # Store cropped frame for debug display (no resize distortion)
+        self.frame_cropped = frame_no_title.copy()
         
         # cv2.resize dsize = (width, height)
         # WINDOW_WORKING_SIZE = (1366, 768) means width=1366, height=768
