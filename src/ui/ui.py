@@ -955,7 +955,7 @@ class MainWindow(QMainWindow):
         qimg = QImage(img.data, width, height, QImage.Format_BGR888)
         pixmap = QPixmap.fromImage(qimg)
 
-        # Scale the image to fit label size while maintaining aspect ratio
+        # Scale the image to fill the entire canvas
         scaled_pixmap = pixmap.scaled(
                             self.debug_canvas.width(),
                             self.debug_canvas.height(),
@@ -975,7 +975,7 @@ class MainWindow(QMainWindow):
         scaled_pixmap = pixmap.scaled(
                             self.route_map_canvas.width(),
                             self.route_map_canvas.height(),
-                            Qt.IgnoreAspectRatio,
+                            Qt.KeepAspectRatio,
                             Qt.SmoothTransformation)
 
         self.route_map_canvas.setPixmap(scaled_pixmap)
