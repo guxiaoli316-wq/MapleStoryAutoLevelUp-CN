@@ -962,11 +962,14 @@ class MapleStoryAutoBot:
         # Store cropped frame for debug display (no resize distortion)
         self.frame_cropped = frame_no_title.copy()
         
-        # cv2.resize dsize = (width, height)
-        # WINDOW_WORKING_SIZE = (1366, 768) means width=1366, height=768
-        result = cv2.resize(frame_no_title, (1366, 768),
-                   interpolation=cv2.INTER_AREA)
-        logger.info(f"[get_img_frame] raw={h}x{w} -> crop={target_h}x{target_w} -> resize=1366x768")
+        # Only resize if frame size doesn't match target (avoid unnecessary scaling)
+        ch, cw = frame_no_title.shape[:2]
+        if ch == 768 and cw == 1366:
+            result = frame_no_title
+        else:
+            result = cv2.resize(frame_no_title, (1366, 768),
+                       interpolation=cv2.INTER_AREA)
+        logger.info(f"[get_img_frame] raw={h}x{w} -> crop={target_h}x{target_w} -> actual={ch}x{cw} -> {'no resize' if ch==768 and cw==1366 else 'resized'}")
         return result
 
     def is_player_stuck(self):
