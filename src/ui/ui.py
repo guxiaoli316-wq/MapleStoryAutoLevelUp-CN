@@ -196,10 +196,12 @@ class MainWindow(QMainWindow):
     def setup_game_window_viz_tab(self):
         tab_game_window_viz = QWidget()
         layout = QVBoxLayout()
+        layout.setContentsMargins(0, 0, 0, 0)  # Remove margins
         tab_game_window_viz.setLayout(layout)
 
         # Create a large QLabel as a canvas
         self.debug_canvas = QLabel()
+        self.debug_canvas.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
         clear_debug_canvas(self.debug_canvas)
         self.debug_canvas.setStyleSheet("background-color: black; color: white;")
         layout.addWidget(self.debug_canvas)
@@ -953,11 +955,11 @@ class MainWindow(QMainWindow):
         qimg = QImage(img.data, width, height, QImage.Format_BGR888)
         pixmap = QPixmap.fromImage(qimg)
 
-        # Scale the image to fit label size but maintain aspect ratio
+        # Scale the image to fit label size while maintaining aspect ratio
         scaled_pixmap = pixmap.scaled(
                             self.debug_canvas.width(),
                             self.debug_canvas.height(),
-                            Qt.IgnoreAspectRatio,
+                            Qt.KeepAspectRatio,
                             Qt.SmoothTransformation)
 
         self.debug_canvas.setPixmap(scaled_pixmap)
