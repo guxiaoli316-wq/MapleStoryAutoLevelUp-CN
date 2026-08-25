@@ -950,20 +950,25 @@ class MapleStoryAutoBot:
         h, w = frame_no_title.shape[:2]
         
         # Center-crop: remove equal border from all sides
-        crop_top = 0
-        crop_bottom = max(0, h - target_h)
-        crop_left = max(0, w - target_w) // 2
-        crop_right = max(0, w - target_w) - crop_left
+        crop_h = max(0, h - target_h)
+        crop_w = max(0, w - target_w)
+        crop_top = crop_h // 2
+        crop_bottom = crop_h - crop_top
+        crop_left = crop_w // 2
+        crop_right = crop_w - crop_left
         frame_no_title = frame_no_title[crop_top:h-crop_bottom, crop_left:w-crop_right]
-
-        # Store raw frame for debug display
-        self.frame_no_title_raw = frame_no_title.copy()
         
+        # Verify exact size after crop
+        ch, cw = frame_no_title.shape[:2]
+        if ch != target_h or cw != target_w:
+            # Force exact size by trimming from bottom/right
+            frame_no_title = frame_no_title[:target_h, :target_w]
+
         # Resize to standard working size for consistent processing
-        # Use INTER_AREA for downscaling to preserve quality
-        result = cv2.resize(frame_no_title, WINDOW_WORKING_SIZE,
+        # WINDOW_WORKING_SIZE = (width, height) for cv2.resize
+        result = cv2.resize(frame_no_title, (WINDOW_WORKING_SIZE[0], WINDOW_WORKING_SIZE[1]),
                    interpolation=cv2.INTER_AREA)
-        logger.info(f"[get_img_frame] {h}x{w} -> crop({target_h}x{target_w}) -> resize({WINDOW_WORKING_SIZE[1]}x{WINDOW_WORKING_SIZE[0]})")
+        logger.info(f"[get_img_frame] raw={h}x{w} crop={target_h}x{target_w} -> actual={ch}x{cw} -> resize={WINDOW_WORKING_SIZE[0]}x{WINDOW_WORKING_SIZE[1]}")
         return result
 
     def is_player_stuck(self):
