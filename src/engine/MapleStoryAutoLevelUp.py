@@ -944,9 +944,23 @@ class MapleStoryAutoBot:
         title_bar = self.cfg["game_window"]["title_bar_height"]
         frame_no_title = self.frame[title_bar:, :]
 
-        # Just cut title bar and return the frame as-is
-        # No crop or resize to avoid any distortion
-        logger.info(f"[get_img_frame] raw frame after title cut: {frame_no_title.shape[1]}x{frame_no_title.shape[0]}")
+        # Crop to exact 1366x768 client area
+        # Raw frame after title bar cut is ~1368x768 (includes left/right borders)
+        target_h, target_w = 768, 1366
+        h, w = frame_no_title.shape[:2]
+        
+        # Center-crop width if needed
+        if w > target_w:
+            crop_w = w - target_w
+            crop_left = crop_w // 2
+            frame_no_title = frame_no_title[:, crop_left:crop_left + target_w]
+        # Center-crop height if needed  
+        if h > target_h:
+            crop_h = h - target_h
+            crop_top = crop_h // 2
+            frame_no_title = frame_no_title[crop_top:crop_top + target_h, :]
+        
+        logger.info(f"[get_img_frame] raw={h}x{w} -> cropped={frame_no_title.shape[0]}x{frame_no_title.shape[1]}")
         return frame_no_title
 
     def is_player_stuck(self):
