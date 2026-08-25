@@ -1569,9 +1569,9 @@ class MapleStoryAutoBot:
         # Grayscale game window
         self.img_frame_gray = cv2.cvtColor(self.img_frame, cv2.COLOR_BGR2GRAY)
 
-        # Image for debug viz - use raw frame for display (no resize distortion)
+        # Image for debug viz - use the working frame (resized to WINDOW_WORKING_SIZE)
         if self.is_show_debug_window:
-            self.img_frame_debug = self.frame_no_title_raw.copy()
+            self.img_frame_debug = self.img_frame.copy()
 
         # Get current route image
         if self.cfg["bot"]["mode"] == "normal":
